@@ -7,7 +7,10 @@
 *.cmxa
 *.cmxs
 *.a
-*_[tjv].mli
-*_[tjv].ml
+*_[btjv].mli
+*_[btjv].ml
+*.mldylib
+*.mllib
 *.exe
+elasticsearch/META
 test/elastictest
