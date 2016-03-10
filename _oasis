@@ -1,0 +1,72 @@
+OASISFormat: 0.4
+Name: ocaml-elasticsearch
+Version: v0.2.0
+OCamlVersion: >= 4.02
+Synopsis: Elasticsearch client for OCaml
+Authors: Skydeck
+License: https://raw.githubusercontent.com/skydeck/ocaml-elasticsearch/master/LICENSE
+AlphaFeatures: ocamlbuild_more_args, compiled_setup_ml, stdfiles_markdown
+Plugins: META (0.4), StdFiles (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+PreBuildCommand: ./atdgen_mk.sh
+
+Library elasticsearch
+  FindLibName: elasticsearch
+  Path: elasticsearch/
+  Modules:
+    Es_client_j,
+    Es_client_v,
+    Es_client,
+    Es_error,
+    Es_mapping,
+    Es_query,
+    Es_untyped_json,
+    Es_field_types_j,
+    Es_field_types_v,
+    Es_client_t,
+    Es_field_types_t
+  BuildDepends:
+    utf8val,
+    netstring,
+    atdgen
+
+Library elastictest
+  FindLibName: elastictest
+  Install: false
+  Path: test/
+  Modules: 
+    Test_mapping_j,
+    Test_mapping_v,
+    Test_mapping_t,
+    Test_util
+  BuildDepends:
+    elasticsearch,
+    lwt,
+    cohttp.lwt,
+    atdgen
+
+Executable elastictest
+  Path: test/
+  MainIs: elastictest.ml
+  Build$: flag(tests)
+  CompiledObject: best
+  Install: false
+  BuildDepends:
+    elastictest,
+    elasticsearch
+
+Test elastictest
+  Run$: flag(tests)
+  Command: $elastictest
+  WorkingDirectory: test
+
+Document "elasticsearch_api"  
+  Type: ocamlbuild (0.4)
+  BuildTools+: ocamldoc
+  Title: API reference for elasticsearch
+  XOCamlbuildPath: .
+  XOCamlbuildExtraArgs+:
+    "-docflags '-colorize-code -short-functors -charset utf-8 -keep-code'"
+  XOCamlbuildLibraries:
+    elasticsearch

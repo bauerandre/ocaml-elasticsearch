@@ -1,24 +1,19 @@
-ocaml-elasticsearch
-=========
+<!--- OASIS_START --->
+<!--- DO NOT EDIT (digest: 018580d49cf50ba9ef1644aaf4eac7ac) --->
 
-Elasticsearch client for OCaml
+ocaml-elasticsearch - Elasticsearch client for OCaml
+====================================================
 
+See the file [INSTALL.md](INSTALL.md) for building and installation
+instructions.
 
-Requirements
-------------
+Copyright and license
+---------------------
 
-- `batteries` @ `https://github.com/ocaml-batteries-team/batteries-included`
-- `atdgen` @ `https://github.com/mjambon/atdgen`
-- `netstring-light` @ `https://github.com/skydeck/netstring-light`
-- `utf8val` @ `https://github.com/skydeck/utf8val`
+ocaml-elasticsearch is distributed using the license describe at this
+[URL](https://raw.githubusercontent.com/skydeck/ocaml-elasticsearch/master/LICENSE).
 
-
-Installation
-------------
-
-```
-$ make && make install
-```
+<!--- OASIS_STOP --->
 
 Usage
 ------------
@@ -101,3 +96,4 @@ TODO
 ------------
 
 * Add full support for Elasticsearch API
+

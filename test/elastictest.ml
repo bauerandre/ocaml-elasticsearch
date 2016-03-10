@@ -315,9 +315,15 @@ let run_tests ~keep =
     sleep lag;
 
     printf "Testing get_item\n%!";
-    test_items_exist index_name mapping_name docs;
+    try 
+      test_items_exist index_name mapping_name docs
+    with e ->
+      begin match Es_error.printer e with
+        | None -> raise e
+        | Some msg -> print_endline msg
+      end;
     printf "Deleting all items\n%!";
-    delete_items index_name mapping_name docs;
+    delete_items index_name mapping_name docs; 
     sleep lag;
 
     printf "Testing that all items are gone\n%!";
@@ -336,7 +342,7 @@ let run_tests ~keep =
     exit (if passed then 0 else 1)
   with e ->
     fin ();
-    raise e
+    raise e 
 
 let main () =
   let keep = ref false in
@@ -347,6 +353,11 @@ let main () =
   let anon_fun s = failwith ("unsupported argument " ^ s) in
   let usage_msg = sprintf "Usage: %s [options]" Sys.argv.(0) in
   Arg.parse options anon_fun usage_msg;
-  run_tests ~keep: !keep
-
+  try
+    run_tests ~keep: !keep
+  with e ->
+    begin match Es_error.printer e with
+      | None -> raise e
+      | Some msg -> print_endline msg
+    end
 let () = main ()

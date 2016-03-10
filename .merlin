@@ -1,0 +1,11 @@
+S src/**
+
+B _build/**
+
+PKG lwt
+PKG cohttp.lwt
+PKG atdgen
+PKG utf8val
+PKG netstring
+PKG yojson
+PKG atdgen

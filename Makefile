@@ -1,29 +1,47 @@
-.PHONY: default all byte opt test install reinstall uninstall clean
+# OASIS_START
+# DO NOT EDIT (digest: 46f8bd9984975bd4727bed22d0876cd2)
 
-default:
-	$(MAKE) -C elasticsearch
+SETUP = ./setup.exe
 
-all:
-	$(MAKE) -C elasticsearch all
+build: setup.data $(SETUP)
+	$(SETUP) -build $(BUILDFLAGS)
 
-byte:
-	$(MAKE) -C elasticsearch byte
+doc: setup.data $(SETUP) build
+	$(SETUP) -doc $(DOCFLAGS)
 
-opt:
-	$(MAKE) -C elasticsearch opt
+test: setup.data $(SETUP) build
+	$(SETUP) -test $(TESTFLAGS)
 
-test: opt
-	$(MAKE) -C test
+all: $(SETUP)
+	$(SETUP) -all $(ALLFLAGS)
 
-install:
-	$(MAKE) -C elasticsearch install
+install: setup.data $(SETUP)
+	$(SETUP) -install $(INSTALLFLAGS)
 
-reinstall:
-	$(MAKE) -C elasticsearch reinstall
+uninstall: setup.data $(SETUP)
+	$(SETUP) -uninstall $(UNINSTALLFLAGS)
 
-uninstall:
-	$(MAKE) -C elasticsearch uninstall
+reinstall: setup.data $(SETUP)
+	$(SETUP) -reinstall $(REINSTALLFLAGS)
 
-clean:
-	$(MAKE) -C elasticsearch clean
-	$(MAKE) -C test clean
+clean: $(SETUP)
+	$(SETUP) -clean $(CLEANFLAGS)
+
+distclean: $(SETUP)
+	$(SETUP) -distclean $(DISTCLEANFLAGS)
+	$(RM) $(SETUP)
+
+setup.data: $(SETUP)
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+configure: $(SETUP)
+	$(SETUP) -configure $(CONFIGUREFLAGS)
+
+setup.exe: setup.ml
+	ocamlfind ocamlopt -o $@ $< || ocamlfind ocamlc -o $@ $< || true
+	$(RM) setup.cmi setup.cmo setup.cmx setup.o
+
+.PHONY: build doc test all install uninstall reinstall clean distclean configure
+
+# OASIS_STOP
+

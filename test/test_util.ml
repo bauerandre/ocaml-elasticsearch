@@ -31,29 +31,28 @@ let wrap ?(headers = []) uri_s meth body =
   let body =
     match body with
         None -> None
-      | Some s -> Cohttp_lwt_unix.Body.body_of_string s
+      | Some s -> Some (Cohttp_lwt_body.of_string s)
   in
 
   Lwt.bind
     (Cohttp_lwt_unix.Client.call ~headers ?body meth uri)
     (function
-      | None -> Lwt.return None
-      | Some (resp, body) ->
-          Lwt.bind
-            (Cohttp_lwt_unix.Body.string_of_body body)
-            (fun body_string ->
-              let status = Cohttp_lwt_unix.Response.status resp in
-              let status_code = Cohttp.Code.code_of_status status in
-              let resp_headers = Cohttp_lwt_unix.Response.headers resp in
-              print_resp status body_string;
-              Lwt.return (
-                Some (
-                  status_code,
-                  Cohttp.Header.to_list resp_headers,
-                  body_string
-                )
-              )
-            )
+        (resp, body) ->
+        Lwt.bind
+          (Cohttp_lwt_body.to_string body)
+          (fun body_string ->
+             let status = Cohttp_lwt_unix.Response.status resp in
+             let status_code = Cohttp.Code.code_of_status status in
+             let resp_headers = Cohttp_lwt_unix.Response.headers resp in
+             print_resp status body_string;
+             Lwt.return (
+               Some (
+                 status_code,
+                 Cohttp.Header.to_list resp_headers,
+                 body_string
+               )
+             )
+          )
     )
 
 module Lwt_http_client =

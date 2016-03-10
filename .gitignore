@@ -1,3 +1,4 @@
+*~
 *.annot
 *.cmi
 *.cmo
@@ -12,5 +13,16 @@
 *.mldylib
 *.mllib
 *.exe
-elasticsearch/META
+META
 test/elastictest
+_build/
+configure
+*.docdir
+*.odocl
+*.native
+myocamlbuild.ml
+setup.cmt
+setup.data
+setup.log
+setup.ml
+_tags
