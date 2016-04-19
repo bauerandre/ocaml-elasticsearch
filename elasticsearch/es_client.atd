@@ -112,7 +112,11 @@ type 'item get_results = {
 } <ocaml field_prefix="grs_">
 
 type 'item get_result = {
-  exists : bool;
+  _index : string;
+  ?_type : string option;
+  _id : string;
+  found : bool;
+  ?_version : int option;
   ?_source <ocaml name="gr_source"> : 'item option;
 } <ocaml field_prefix="gr_">
 

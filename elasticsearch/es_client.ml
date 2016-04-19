@@ -201,8 +201,11 @@ struct
     || not (is_acceptable_status accepted_statuses status)
 
   let read_body converter ((_, _, body) as http_resp) =
-    try converter body
-    with _ -> raise Es_error.(Error (Http_error http_resp))
+    try 
+      converter body
+    with 
+    | Ag_oj_run.Error msg -> raise (Ag_oj_run.Error msg)
+    |  _ -> raise Es_error.(Error (Http_error http_resp))
 
   (*
     Take an optional http response, then
@@ -312,7 +315,7 @@ struct
       Es_client_j.get_result_of_string (Item.read ~doc_type:mapping)
     in
     let x = read_body conv http_resp in
-    if x.gr_exists then
+    if x.gr_found then
       return x.gr_source
     else
       return None
