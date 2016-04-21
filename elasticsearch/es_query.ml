@@ -32,6 +32,7 @@ type with_score = bool
 type query =
   | Match_all
   | Term_query of field_name * field_value
+  | Terms_query of field_name * field_value list
   | Match_and of field_name * field_value (* parse and match all terms *)
   | Match_or of field_name * field_value (* parse and match at least one term *)
   | Match_phrase of field_name * field_value
@@ -116,6 +117,13 @@ let rec to_json_ast ~cst_score = function
           name, `String s
         ]
       ]
+
+  | Terms_query (name, l) ->
+    `Assoc [
+      "terms", `Assoc [
+        name, `List (List.map (fun s -> `String s) l) 
+      ]
+    ]
 
   | Match_and (name, value) ->
       `Assoc [
