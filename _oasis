@@ -25,7 +25,8 @@ Library elasticsearch
     Es_field_types_j,
     Es_field_types_v,
     Es_client_t,
-    Es_field_types_t
+    Es_field_types_t,
+    Es_field_types_b
   BuildDepends:
     utf8val,
     netstring,
